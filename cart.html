@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shopping Cart — Pick&Pack | Gifts that get them</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- ==========================================================================
+       NAVIGATION BAR
+       ========================================================================== -->
+  <nav class="navbar">
+    <div class="container navbar-inner">
+      <a href="index.html" class="brand-logo">
+        <span class="brand-icon">🎁</span>
+        <div>
+          <span>Pick&Pack</span>
+          <span class="brand-tagline">Gifts that get them</span>
+        </div>
+      </a>
+
+      <button class="mobile-nav-toggle" id="mobile-menu-toggle" aria-label="Toggle Navigation">☰</button>
+
+      <ul class="nav-links" id="nav-links">
+        <li><a href="index.html" class="nav-link">Shop</a></li>
+        <li>
+          <button class="nav-link nav-bundle-btn" id="open-bundle-drawer">
+            <span>🎀 My Bundle</span>
+            <span class="nav-badge" id="nav-bundle-badge" style="display: none;">0</span>
+          </button>
+        </li>
+        <li><a href="builder.html" class="nav-link">Builder</a></li>
+        <li>
+          <a href="cart.html" class="nav-link active">
+            <span>🛒 Cart</span>
+            <span class="nav-badge" id="nav-cart-badge" style="display: none;">0</span>
+          </a>
+        </li>
+        <li id="nav-user-container">
+          <a href="login.html" class="nav-link">
+            <span>👤</span> Login
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ==========================================================================
+       CART MAIN SECTION
+       ========================================================================== -->
+  <main class="cart-layout">
+    <div class="container">
+      
+      <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 28px;">
+        <div>
+          <h1 style="font-size: 2.2rem; margin-bottom: 4px;">Shopping Cart</h1>
+          <p style="color: var(--navy-muted);">Review your curated gift bundles and standalone items before checkout</p>
+        </div>
+        <button class="btn btn-secondary btn-sm" id="btn-clear-cart" style="color: #EF4444;">
+          🗑️ Clear Cart
+        </button>
+      </div>
+
+      <div class="cart-grid" id="cart-content-grid">
+        
+        <!-- Left: Cart Items List -->
+        <div class="cart-items-column" id="cart-items-container">
+          <!-- Rendered via JS -->
+        </div>
+
+        <!-- Right: Order Summary Card -->
+        <div class="cart-summary-column">
+          <div class="builder-card-section" style="position: sticky; top: 90px; border: 2px solid var(--border-light);">
+            <h3 style="font-size: 1.25rem; margin-bottom: 18px;">Order Summary</h3>
+
+            <div class="drawer-price-breakdown">
+              <div class="price-row">
+                <span>Items Subtotal:</span>
+                <span id="cart-subtotal">₹0</span>
+              </div>
+              <div class="price-row price-savings" id="cart-bundle-discount-row">
+                <span>Bundle Discounts:</span>
+                <span id="cart-bundle-discount">-₹0</span>
+              </div>
+              <div class="price-row" id="cart-wrapping-row">
+                <span>Gift Packaging:</span>
+                <span id="cart-wrapping-fee">₹0</span>
+              </div>
+              <div class="price-row">
+                <span>Standard Delivery:</span>
+                <span id="cart-shipping-fee">FREE</span>
+              </div>
+              <div class="price-row price-savings" id="cart-coupon-row" style="display: none;">
+                <span id="cart-coupon-label">Coupon Discount:</span>
+                <span id="cart-coupon-val">-₹0</span>
+              </div>
+              <div class="price-row total-row">
+                <span>Grand Total:</span>
+                <span id="cart-grand-total" style="color: var(--coral-dark);">₹0</span>
+              </div>
+            </div>
+
+            <!-- Coupon Code Section -->
+            <div style="margin: 20px 0 16px; border-top: 1px dashed var(--border); padding-top: 16px;">
+              <label style="font-size: 0.8rem; font-weight: 700; color: var(--navy); display: block; margin-bottom: 6px;">
+                Have a Promo Code? Try <code style="background: var(--cream-soft); padding: 2px 6px; border-radius: 4px; color: var(--coral-dark);">GIFT100</code>
+              </label>
+              <div style="display: flex; gap: 8px;">
+                <input type="text" id="coupon-input" class="form-input" placeholder="Enter promo code" style="text-transform: uppercase;">
+                <button class="btn btn-secondary btn-sm" id="btn-apply-coupon">Apply</button>
+              </div>
+              <div id="coupon-message" style="font-size: 0.78rem; margin-top: 6px; display: none;"></div>
+            </div>
+
+            <a href="checkout.html" class="btn btn-primary btn-full btn-lg" id="btn-proceed-checkout">
+              Proceed to Checkout →
+            </a>
+
+            <div style="margin-top: 18px; display: flex; flex-direction: column; gap: 8px; font-size: 0.78rem; color: var(--navy-muted);">
+              <div>🚚 Free delivery on orders over ₹999</div>
+              <div>✨ 100% satisfaction guarantee on gift presentation</div>
+              <div>🔒 Safe & encrypted checkout</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Empty Cart State -->
+      <div id="cart-empty-state" style="display: none; text-align: center; padding: 80px 20px; background: white; border-radius: var(--radius-xl); border: 1px solid var(--border-light); margin: 20px 0;">
+        <div style="font-size: 4rem; margin-bottom: 16px;">🛍️</div>
+        <h2 style="font-size: 1.8rem; margin-bottom: 8px; color: var(--navy);">Your cart is currently empty</h2>
+        <p style="color: var(--navy-muted); max-width: 480px; margin: 0 auto 24px;">
+          Looks like you haven't added any gift bundles yet. Let's find something heartwarming for someone special!
+        </p>
+        <div style="display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;">
+          <a href="index.html" class="btn btn-primary">
+            ✨ Describe who you want to gift
+          </a>
+          <a href="index.html#catalog" class="btn btn-secondary">
+            Explore All Gifts
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Side Drawer (Shared) -->
+  <div class="drawer-overlay" id="drawer-overlay"></div>
+  <aside class="bundle-drawer" id="side-bundle-drawer">
+    <div class="drawer-header">
+      <div class="drawer-title-wrap">
+        <h3>🎁 My Gift Bundle</h3>
+        <span class="drawer-recipient-tag" id="drawer-recipient-name">For Someone Special</span>
+      </div>
+      <button class="wizard-close-btn" id="close-bundle-drawer" aria-label="Close drawer">&times;</button>
+    </div>
+    <div class="drawer-body">
+      <div class="tier-discount-banner">
+        <div class="tier-title-row">
+          <span id="drawer-tier-message">Add 3 items to get 5% off!</span>
+          <span id="drawer-tier-rate" class="tag-badge tag-badge-gold">0% Off</span>
+        </div>
+        <div class="tier-progress-track">
+          <div class="tier-progress-fill" id="drawer-tier-fill" style="width: 0%;"></div>
+        </div>
+      </div>
+      <div class="drawer-items-list" id="drawer-items-container"></div>
+    </div>
+    <div class="drawer-footer">
+      <div class="drawer-price-breakdown">
+        <div class="price-row"><span>Subtotal:</span><span id="drawer-subtotal">₹0</span></div>
+        <div class="price-row price-savings" id="drawer-discount-row" style="display: none;"><span>Discount:</span><span id="drawer-discount">-₹0</span></div>
+        <div class="price-row total-row"><span>Total:</span><span id="drawer-final-total">₹0</span></div>
+      </div>
+      <button class="btn btn-primary btn-full" id="drawer-add-cart-btn">🛒 Add Bundle to Cart</button>
+    </div>
+  </aside>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-bottom">
+      <span>&copy; 2026 Pick&Pack. All rights reserved.</span>
+      <a href="index.html" style="color: var(--coral);">Back to Shop</a>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="products.js"></script>
+  <script src="script.js"></script>
+  <script>
+    // ========================================================================
+    // CART PAGE LOGIC
+    // ========================================================================
+    let appliedCoupon = null;
+
+    function renderCartPage() {
+      const cart = getCart();
+      const container = document.getElementById("cart-items-container");
+      const grid = document.getElementById("cart-content-grid");
+      const emptyState = document.getElementById("cart-empty-state");
+      const clearBtn = document.getElementById("btn-clear-cart");
+
+      if (!cart || cart.length === 0) {
+        if (grid) grid.style.display = "none";
+        if (emptyState) emptyState.style.display = "block";
+        if (clearBtn) clearBtn.style.display = "none";
+        return;
+      }
+
+      if (grid) grid.style.display = "grid";
+      if (emptyState) emptyState.style.display = "none";
+      if (clearBtn) clearBtn.style.display = "inline-flex";
+
+      let rawSubtotal = 0;
+      let totalBundleDiscounts = 0;
+      let totalWrappingFees = 0;
+
+      container.innerHTML = cart.map((item, index) => {
+        if (item.type === "bundle") {
+          const p = item.pricing || {};
+          rawSubtotal += (p.itemsSubtotal || 0);
+          totalBundleDiscounts += (p.discountAmount || 0);
+          totalWrappingFees += (p.wrappingPrice || 0);
+
+          return `
+            <div class="cart-bundle-card">
+              <div class="cart-bundle-head">
+                <div>
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <span class="tag-badge tag-badge-coral">🎁 Gift Bundle</span>
+                    <span class="tag-badge tag-badge-mint">${p.discountTier || 0}% Bundle Discount Applied</span>
+                  </div>
+                  <h3 style="font-size: 1.3rem; margin: 6px 0 2px;">Bundle for ${item.recipient.name}</h3>
+                  <p style="font-size: 0.82rem; color: var(--navy-muted);">
+                    Occasion: ${item.recipient.occasion} • ${p.totalItemsCount || item.items.length} Gifts Included
+                  </p>
+                </div>
+                <div style="text-align: right;">
+                  <div style="font-size: 1.3rem; font-weight: 800; color: var(--coral-dark);">₹${p.finalPrice}</div>
+                  <button class="btn btn-secondary btn-sm" style="color: #EF4444; margin-top: 6px;" onclick="removeCartItem(${index})">
+                    Remove Bundle
+                  </button>
+                </div>
+              </div>
+
+              <!-- Gift Wrapping and Message info -->
+              <div style="background: var(--cream-soft); border-radius: var(--radius-md); padding: 12px 16px; margin-bottom: 16px; font-size: 0.85rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+                <div>
+                  <strong>Packaging:</strong> ${item.wrapping ? item.wrapping.name : 'Standard'} (${item.wrapping && item.wrapping.price ? '+₹' + item.wrapping.price : 'Free'})
+                </div>
+                <div>
+                  <strong>Card Note:</strong> "${item.cardMessage ? item.cardMessage.substring(0, 50) + (item.cardMessage.length > 50 ? '...' : '') : 'No message'}"
+                </div>
+              </div>
+
+              <!-- Included Items Accordion / List -->
+              <div style="display: flex; flex-direction: column; gap: 10px;">
+                ${item.items.map(subItem => `
+                  <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.88rem; padding: 6px 0; border-bottom: 1px dashed var(--border-light);">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                      <img src="${subItem.image}" alt="${subItem.name}" style="width: 38px; height: 38px; border-radius: var(--radius-sm); object-fit: cover;" onerror="this.src='https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&w=100&q=80'">
+                      <span>${subItem.name} <strong style="color: var(--navy-muted);">× ${subItem.quantity}</strong></span>
+                    </div>
+                    <span style="font-weight: 700; color: var(--navy);">₹${subItem.price * subItem.quantity}</span>
+                  </div>
+                `).join("")}
+              </div>
+            </div>
+          `;
+        } else {
+          // Single standalone item
+          const prod = item.product;
+          const qty = item.quantity || 1;
+          const lineTotal = prod.price * qty;
+          rawSubtotal += lineTotal;
+
+          return `
+            <div class="cart-single-card">
+              <img src="${prod.image}" alt="${prod.name}" style="width: 74px; height: 74px; border-radius: var(--radius-md); object-fit: cover;" onerror="this.src='https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&w=200&q=80'">
+              <div style="flex-grow: 1;">
+                <span class="tag-badge">${prod.category}</span>
+                <h4 style="font-size: 1.05rem; margin: 4px 0 2px;">${prod.name}</h4>
+                <div style="font-size: 0.9rem; color: var(--coral-dark); font-weight: 800;">₹${prod.price}</div>
+              </div>
+              <div class="qty-stepper">
+                <button class="qty-btn" onclick="updateSingleItemQty(${index}, -1)">−</button>
+                <span class="qty-display">${qty}</span>
+                <button class="qty-btn" onclick="updateSingleItemQty(${index}, 1)">+</button>
+              </div>
+              <div style="font-weight: 800; font-size: 1.1rem; min-width: 80px; text-align: right;">
+                ₹${lineTotal}
+              </div>
+              <button class="drawer-item-delete" onclick="removeCartItem(${index})" title="Remove item">✕</button>
+            </div>
+          `;
+        }
+      }).join("");
+
+      // Calculate final summary
+      const shippingFee = (rawSubtotal - totalBundleDiscounts) >= 999 ? 0 : 99;
+
+      let couponDiscount = 0;
+      if (appliedCoupon === "GIFT100") {
+        couponDiscount = 100;
+      } else if (appliedCoupon === "WELCOME10") {
+        couponDiscount = Math.round((rawSubtotal - totalBundleDiscounts) * 0.10);
+      }
+
+      const grandTotal = Math.max(0, rawSubtotal - totalBundleDiscounts + totalWrappingFees + shippingFee - couponDiscount);
+
+      // Update UI elements
+      document.getElementById("cart-subtotal").textContent = `₹${rawSubtotal.toLocaleString('en-IN')}`;
+      
+      const bDiscRow = document.getElementById("cart-bundle-discount-row");
+      const bDiscVal = document.getElementById("cart-bundle-discount");
+      if (totalBundleDiscounts > 0) {
+        bDiscRow.style.display = "flex";
+        bDiscVal.textContent = `-₹${totalBundleDiscounts.toLocaleString('en-IN')}`;
+      } else {
+        bDiscRow.style.display = "none";
+      }
+
+      const wrapRow = document.getElementById("cart-wrapping-row");
+      const wrapVal = document.getElementById("cart-wrapping-fee");
+      if (totalWrappingFees > 0) {
+        wrapRow.style.display = "flex";
+        wrapVal.textContent = `+₹${totalWrappingFees.toLocaleString('en-IN')}`;
+      } else {
+        wrapRow.style.display = "none";
+      }
+
+      document.getElementById("cart-shipping-fee").textContent = shippingFee === 0 ? "FREE" : `₹${shippingFee}`;
+
+      const couponRow = document.getElementById("cart-coupon-row");
+      const couponVal = document.getElementById("cart-coupon-val");
+      const couponLabel = document.getElementById("cart-coupon-label");
+      if (couponDiscount > 0) {
+        couponRow.style.display = "flex";
+        couponLabel.textContent = `Promo Code (${appliedCoupon}):`;
+        couponVal.textContent = `-₹${couponDiscount.toLocaleString('en-IN')}`;
+      } else {
+        couponRow.style.display = "none";
+      }
+
+      document.getElementById("cart-grand-total").textContent = `₹${grandTotal.toLocaleString('en-IN')}`;
+    }
+
+    function removeCartItem(index) {
+      const cart = getCart();
+      cart.splice(index, 1);
+      saveCart(cart);
+      renderCartPage();
+      showToast("Item removed from cart", "info");
+    }
+
+    function updateSingleItemQty(index, change) {
+      const cart = getCart();
+      if (!cart[index] || cart[index].type !== "single") return;
+
+      const newQty = (cart[index].quantity || 1) + change;
+      if (newQty <= 0) {
+        removeCartItem(index);
+      } else {
+        cart[index].quantity = newQty;
+        saveCart(cart);
+        renderCartPage();
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      renderCartPage();
+
+      // Clear Cart
+      const clearBtn = document.getElementById("btn-clear-cart");
+      if (clearBtn) {
+        clearBtn.addEventListener("click", () => {
+          if (confirm("Are you sure you want to clear your entire cart?")) {
+            saveCart([]);
+            renderCartPage();
+            showToast("Cart cleared", "info");
+          }
+        });
+      }
+
+      // Promo Code Apply
+      const btnApplyCoupon = document.getElementById("btn-apply-coupon");
+      const couponInput = document.getElementById("coupon-input");
+      const couponMsg = document.getElementById("coupon-message");
+
+      if (btnApplyCoupon && couponInput && couponMsg) {
+        btnApplyCoupon.addEventListener("click", () => {
+          const code = couponInput.value.trim().toUpperCase();
+          if (code === "GIFT100") {
+            appliedCoupon = "GIFT100";
+            couponMsg.style.display = "block";
+            couponMsg.style.color = "var(--mint)";
+            couponMsg.textContent = "🎉 Code GIFT100 applied: ₹100 instant discount!";
+            renderCartPage();
+          } else if (code === "WELCOME10") {
+            appliedCoupon = "WELCOME10";
+            couponMsg.style.display = "block";
+            couponMsg.style.color = "var(--mint)";
+            couponMsg.textContent = "🎉 Code WELCOME10 applied: 10% instant discount!";
+            renderCartPage();
+          } else {
+            couponMsg.style.display = "block";
+            couponMsg.style.color = "#EF4444";
+            couponMsg.textContent = "Invalid code. Please try GIFT100 or WELCOME10.";
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pick&Pack — Gifts that get them | Curated Gift Bundles</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- ==========================================================================
+       NAVIGATION BAR
+       ========================================================================== -->
+  <nav class="navbar">
+    <div class="container navbar-inner">
+      <a href="index.html" class="brand-logo">
+        <span class="brand-icon">🎁</span>
+        <div>
+          <span>Pick&Pack</span>
+          <span class="brand-tagline">Gifts that get them</span>
+        </div>
+      </a>
+
+      <button class="mobile-nav-toggle" id="mobile-menu-toggle" aria-label="Toggle Navigation">☰</button>
+
+      <ul class="nav-links" id="nav-links">
+        <li><a href="index.html" class="nav-link active">Shop</a></li>
+        <li>
+          <button class="nav-link nav-bundle-btn" id="open-bundle-drawer">
+            <span>🎀 My Bundle</span>
+            <span class="nav-badge" id="nav-bundle-badge" style="display: none;">0</span>
+          </button>
+        </li>
+        <li><a href="builder.html" class="nav-link">Builder</a></li>
+        <li>
+          <a href="cart.html" class="nav-link">
+            <span>🛒 Cart</span>
+            <span class="nav-badge" id="nav-cart-badge" style="display: none;">0</span>
+          </a>
+        </li>
+        <li id="nav-user-container">
+          <a href="login.html" class="nav-link">
+            <span>👤</span> Login
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ==========================================================================
+       HERO SECTION
+       ========================================================================== -->
+  <header class="hero">
+    <div class="container hero-grid">
+      <div class="hero-content">
+        <div class="hero-pill">
+          <span>✨</span> Smart Gift Bundle Matcher
+        </div>
+        <h1 class="hero-title">
+          Build the perfect bundle. <br>
+          <span class="highlight">Gifts that get them.</span>
+        </h1>
+        <p class="hero-subtitle">
+          Not sure what to gift? Tell us about their personality, hobbies, and the occasion — our recommendation engine curates a custom gift bundle they’ll truly cherish.
+        </p>
+        <div class="hero-actions">
+          <button class="btn btn-primary btn-lg" id="open-wizard-btn">
+            <span>✨ Describe who you want to gift</span>
+          </button>
+          <a href="#catalog" class="btn btn-secondary btn-lg">
+            <span>Explore All Gifts</span>
+          </a>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat-item">
+            <h4>40+</h4>
+            <p>Curated Gift Picks</p>
+          </div>
+          <div class="hero-stat-item">
+            <h4>Up to 15%</h4>
+            <p>Tiered Bundle Discount</p>
+          </div>
+          <div class="hero-stat-item">
+            <h4>100%</h4>
+            <p>Thoughtful & Handpacked</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="hero-card-stack">
+          <div class="hero-floating-badge badge-1">
+            <span style="font-size: 1.5rem;">🌸</span>
+            <div>
+              <strong style="font-size: 0.82rem; display: block; color: var(--navy);">Pastel Dream Bouquet</strong>
+              <span style="font-size: 0.72rem; color: var(--coral-dark); font-weight: 700;">Top pick for Ananya</span>
+            </div>
+          </div>
+
+          <div class="hero-main-card">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px;">
+              <span class="tag-badge tag-badge-coral">🎁 Sample Bundle Preview</span>
+              <span style="font-size: 0.8rem; font-weight: 700; color: var(--mint);">10% Tier Discount Applied</span>
+            </div>
+            <img src="https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&w=600&q=80" alt="Gift Box" style="border-radius: var(--radius-md); width: 100%; height: 230px; object-fit: cover; margin-bottom: 14px;">
+            <div style="display: flex; justify-content: space-between; align-items: baseline;">
+              <div>
+                <h4 style="font-size: 1.1rem; color: var(--navy);">Birthday Bundle for Bestie</h4>
+                <p style="font-size: 0.8rem; color: var(--navy-muted);">5 items: Hydrangeas, Candle, Boba Plush, Journal & Truffles</p>
+              </div>
+              <span style="font-size: 1.3rem; font-weight: 800; color: var(--coral-dark);">₹2,149</span>
+            </div>
+          </div>
+
+          <div class="hero-floating-badge badge-2">
+            <span style="font-size: 1.5rem;">🎉</span>
+            <div>
+              <strong style="font-size: 0.82rem; display: block; color: var(--navy);">Wax Seal & Card Included</strong>
+              <span style="font-size: 0.72rem; color: var(--mint); font-weight: 700;">Classic Kraft Wrapping</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==========================================================================
+       GIFT SUGGESTIONS SECTION (Populated after wizard)
+       ========================================================================== -->
+  <section class="recommendations-section" id="recommendations-section">
+    <div class="container">
+      <div class="rec-banner">
+        <div class="rec-header">
+          <div class="rec-title-wrap">
+            <h2 id="rec-greeting-title">Here's what we think they will love ✨</h2>
+            <p style="color: var(--navy-muted); font-size: 0.95rem;" id="rec-greeting-subtitle">
+              Based on your answers, we carefully scored and ranked these gifts:
+            </p>
+            <div class="rec-profile-chips" id="rec-profile-chips">
+              <!-- Dynamically populated tags -->
+            </div>
+          </div>
+          <div class="rec-actions">
+            <button class="btn btn-primary btn-sm" id="rec-add-all-btn">
+              <span>🎁 Add all top picks</span>
+            </button>
+            <button class="btn btn-secondary btn-sm" id="rec-suggest-again-btn">
+              <span>🔄 Suggest again</span>
+            </button>
+            <a href="builder.html" class="btn btn-navy btn-sm">
+              <span>Go to Bundle Builder →</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="rec-grid" id="rec-cards-grid">
+          <!-- Dynamically populated recommendation cards -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       PRODUCT CATALOG & FILTER CHIPS
+       ========================================================================== -->
+  <main class="catalog-section" id="catalog">
+    <div class="container">
+      <div class="catalog-header">
+        <div class="catalog-title-row">
+          <div>
+            <h2 style="font-size: 2rem; margin-bottom: 4px;">Curated Gift Collection</h2>
+            <p style="color: var(--navy-muted);">Handpick individual items or add them to your personalized bundle</p>
+          </div>
+
+          <div class="search-sort-bar">
+            <div class="search-input-wrap">
+              <span class="search-icon">🔍</span>
+              <input type="text" id="catalog-search" class="search-input" placeholder="Search gifts, tags, categories...">
+            </div>
+            <select id="catalog-sort" class="sort-select">
+              <option value="featured">Featured / Bestsellers</option>
+              <option value="price-low">Price: Low to High</option>
+              <option value="price-high">Price: High to Low</option>
+              <option value="rating">Highest Rated</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Category Chips -->
+        <div class="category-chips-wrap" id="category-chips-wrap">
+          <button class="filter-chip active" data-category="all">✨ All Gifts</button>
+          <button class="filter-chip" data-category="Flowers">🌸 Flowers</button>
+          <button class="filter-chip" data-category="Cute Stuff">🧸 Cute Stuff</button>
+          <button class="filter-chip" data-category="Stationery">✍️ Stationery</button>
+          <button class="filter-chip" data-category="Snacks">🍫 Snacks</button>
+          <button class="filter-chip" data-category="Tech">⚡ Tech</button>
+          <button class="filter-chip" data-category="Self-care">🕯️ Self-care</button>
+          <button class="filter-chip" data-category="Books">📚 Books</button>
+          <button class="filter-chip" data-category="Accessories">✨ Accessories</button>
+        </div>
+      </div>
+
+      <!-- Products Grid -->
+      <div class="products-grid" id="products-grid">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+  </main>
+
+  <!-- ==========================================================================
+       "DESCRIBE WHO YOU WANT TO GIFT" MULTI-STEP MODAL
+       ========================================================================== -->
+  <div class="modal-overlay" id="wizard-modal-overlay">
+    <div class="wizard-modal" role="dialog" aria-modal="true">
+      <div class="wizard-header">
+        <div>
+          <h3 style="font-size: 1.35rem; color: var(--navy);">Gift Finder Assistant</h3>
+          <p style="font-size: 0.8rem; color: var(--navy-muted);">4 quick steps to discover thoughtful gifts</p>
+        </div>
+        <button class="wizard-close-btn" id="close-wizard-btn" aria-label="Close modal">&times;</button>
+      </div>
+
+      <!-- Progress Track -->
+      <div class="wizard-progress">
+        <div class="progress-track">
+          <div class="progress-fill" id="wizard-progress-fill" style="width: 25%;"></div>
+        </div>
+        <div class="step-indicators">
+          <span class="step-indicator active" id="step-ind-1">1. Who</span>
+          <span class="step-indicator" id="step-ind-2">2. Personality</span>
+          <span class="step-indicator" id="step-ind-3">3. Interests</span>
+          <span class="step-indicator" id="step-ind-4">4. Occasion</span>
+        </div>
+      </div>
+
+      <div class="wizard-body">
+        <!-- STEP 1: Basic Profile -->
+        <div class="wizard-step active" id="wizard-step-1">
+          <h3 class="step-title">Who is this gift for?</h3>
+          <p class="step-subtitle">Tell us who they are so we can tailor the tone and presentation.</p>
+
+          <div class="form-group">
+            <label class="form-label" for="wiz-name">Recipient's Name</label>
+            <input type="text" id="wiz-name" class="form-input" placeholder="e.g. Ananya, Rahul, Mom, Maya" value="Ananya">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="wiz-relation">Who are they to you?</label>
+            <select id="wiz-relation" class="form-select">
+              <option value="friend" selected>Friend</option>
+              <option value="sibling">Sibling (Brother / Sister)</option>
+              <option value="partner">Partner / Spouse / Significant Other</option>
+              <option value="parent">Parent (Mom / Dad)</option>
+              <option value="colleague">Colleague / Workmate</option>
+              <option value="teacher">Teacher / Mentor</option>
+            </select>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+            <div class="form-group">
+              <label class="form-label" for="wiz-gender">Gender</label>
+              <select id="wiz-gender" class="form-select">
+                <option value="female" selected>Female</option>
+                <option value="male">Male</option>
+                <option value="non-binary">Non-binary</option>
+                <option value="prefer not to say">Prefer not to say</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="wiz-age">Age Group</label>
+              <select id="wiz-age" class="form-select">
+                <option value="kids">Kids (under 13)</option>
+                <option value="teens">Teens (13 - 18)</option>
+                <option value="young adults" selected>Young Adults (19 - 25)</option>
+                <option value="adults">Adults (26 - 40)</option>
+                <option value="mature">Mature (41 - 60)</option>
+                <option value="seniors">Seniors (60+)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 2: Personality Chips (Pick up to 3) -->
+        <div class="wizard-step" id="wizard-step-2">
+          <div style="display: flex; justify-content: space-between; align-items: baseline;">
+            <h3 class="step-title">What is their personality like?</h3>
+            <span style="font-size: 0.82rem; font-weight: 700; color: var(--coral-dark);" id="personality-counter">Pick up to 3 (2/3)</span>
+          </div>
+          <p class="step-subtitle">Choose up to 3 traits that capture their energy.</p>
+
+          <div class="selectable-chips" id="personality-chips">
+            <div class="select-chip selected" data-value="soft">🌸 Soft & Gentle</div>
+            <div class="select-chip selected" data-value="happy">☀️ Happy & Bubbly</div>
+            <div class="select-chip" data-value="funny">😂 Funny & Witty</div>
+            <div class="select-chip" data-value="calm">🧘 Calm & Mindful</div>
+            <div class="select-chip" data-value="bold">🔥 Bold & Confident</div>
+            <div class="select-chip" data-value="creative">🎨 Creative & Artistic</div>
+            <div class="select-chip" data-value="studious">📖 Studious & Focused</div>
+            <div class="select-chip" data-value="adventurous">🎒 Adventurous & Free</div>
+            <div class="select-chip" data-value="romantic">💖 Romantic & Sentimental</div>
+            <div class="select-chip" data-value="practical">💡 Practical & Organized</div>
+          </div>
+        </div>
+
+        <!-- STEP 3: Interests Chips (Multi-select) -->
+        <div class="wizard-step" id="wizard-step-3">
+          <h3 class="step-title">What are they into?</h3>
+          <p class="step-subtitle">Pick any passions, hobbies, or aesthetic interests they enjoy.</p>
+
+          <div class="selectable-chips" id="interest-chips">
+            <div class="select-chip selected" data-value="flowers">💐 Flowers & Botanicals</div>
+            <div class="select-chip selected" data-value="cute stuff">🧸 Cute Stuff & Kawaii</div>
+            <div class="select-chip" data-value="books">📚 Books & Reading</div>
+            <div class="select-chip" data-value="music">🎵 Music & Podcasts</div>
+            <div class="select-chip" data-value="fitness">💪 Fitness & Wellness</div>
+            <div class="select-chip" data-value="gaming">🎮 Gaming & Streaming</div>
+            <div class="select-chip" data-value="art">🖌️ Art & Handcrafts</div>
+            <div class="select-chip" data-value="travel">✈️ Travel & Escapes</div>
+            <div class="select-chip" data-value="cooking">☕ Coffee, Tea & Cooking</div>
+            <div class="select-chip" data-value="tech">⚡ Gadgets & Tech</div>
+            <div class="select-chip" data-value="fashion">✨ Fashion & Styling</div>
+            <div class="select-chip" data-value="skincare">🧖 Skincare & Pampering</div>
+            <div class="select-chip" data-value="plants">🪴 Houseplants & Nature</div>
+          </div>
+        </div>
+
+        <!-- STEP 4: Occasion & Budget -->
+        <div class="wizard-step" id="wizard-step-4">
+          <h3 class="step-title">Occasion & Target Budget</h3>
+          <p class="step-subtitle">Final touch! Choose the event and your preferred spending limit.</p>
+
+          <div class="form-group">
+            <label class="form-label" for="wiz-occasion">What is the occasion?</label>
+            <select id="wiz-occasion" class="form-select">
+              <option value="birthday" selected>🎂 Birthday</option>
+              <option value="anniversary">💍 Anniversary</option>
+              <option value="farewell">✈️ Farewell / Goodbye</option>
+              <option value="thank you">🙏 Thank You</option>
+              <option value="festival">🪔 Festival / Celebration</option>
+              <option value="just because">💝 Just Because / Surprise</option>
+            </select>
+          </div>
+
+          <div class="budget-slider-container">
+            <span style="font-size: 0.85rem; font-weight: 700; color: var(--navy);">Target Bundle Budget</span>
+            <div class="budget-val-display" id="wizard-budget-display">₹2,000</div>
+            <input type="range" min="300" max="5000" step="100" value="2000" class="budget-range-input" id="wizard-budget-slider">
+            <div class="budget-limits">
+              <span>₹300</span>
+              <span>₹2,500</span>
+              <span>₹5,000</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Wizard Navigation Footer -->
+      <div class="wizard-footer">
+        <button class="btn btn-secondary" id="wizard-prev-btn" style="visibility: hidden;">
+          ← Back
+        </button>
+        <div style="display: flex; gap: 10px;">
+          <button class="btn btn-primary" id="wizard-next-btn">
+            Next Step →
+          </button>
+          <button class="btn btn-primary" id="wizard-submit-btn" style="display: none;">
+            ✨ Find Perfect Gifts
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       SIDE BUNDLE DRAWER (SLIDE-OVER)
+       ========================================================================== -->
+  <div class="drawer-overlay" id="drawer-overlay"></div>
+  <aside class="bundle-drawer" id="side-bundle-drawer">
+    <div class="drawer-header">
+      <div class="drawer-title-wrap">
+        <h3>🎁 My Gift Bundle</h3>
+        <span class="drawer-recipient-tag" id="drawer-recipient-name">For Someone Special</span>
+      </div>
+      <button class="wizard-close-btn" id="close-bundle-drawer" aria-label="Close drawer">&times;</button>
+    </div>
+
+    <div class="drawer-body">
+      <!-- Tiered Discount Bar -->
+      <div class="tier-discount-banner">
+        <div class="tier-title-row">
+          <span id="drawer-tier-message">Add 3 items to get 5% off!</span>
+          <span id="drawer-tier-rate" class="tag-badge tag-badge-gold">0% Off</span>
+        </div>
+        <div class="tier-progress-track">
+          <div class="tier-progress-fill" id="drawer-tier-fill" style="width: 0%;"></div>
+        </div>
+        <div class="tier-milestones">
+          <span>3 items: 5%</span>
+          <span>5 items: 10%</span>
+          <span>7+ items: 15%</span>
+        </div>
+      </div>
+
+      <!-- Items List -->
+      <div class="drawer-items-list" id="drawer-items-container">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+
+    <div class="drawer-footer">
+      <div class="drawer-price-breakdown">
+        <div class="price-row">
+          <span>Subtotal:</span>
+          <span id="drawer-subtotal">₹0</span>
+        </div>
+        <div class="price-row price-savings" id="drawer-discount-row" style="display: none;">
+          <span>Bundle Discount:</span>
+          <span id="drawer-discount">-₹0</span>
+        </div>
+        <div class="price-row price-row total-row">
+          <span>Estimated Total:</span>
+          <span id="drawer-final-total">₹0</span>
+        </div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <button class="btn btn-primary btn-full" id="drawer-add-cart-btn">
+          🛒 Add Bundle to Cart
+        </button>
+        <a href="builder.html" class="btn btn-secondary btn-full" style="text-align: center;">
+          Full Bundle Builder (Gift Card & Wrapping) →
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ==========================================================================
+       FOOTER
+       ========================================================================== -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <div class="footer-logo">🎁 Pick&Pack</div>
+        <p class="footer-desc">
+          "Gifts that get them" — We take the guesswork out of gifting with personalized bundles, playful surprises, and thoughtful recommendations.
+        </p>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <ul class="footer-links">
+          <li><a href="index.html">Gift Catalog</a></li>
+          <li><a href="builder.html">Bundle Builder</a></li>
+          <li><a href="cart.html">Shopping Cart</a></li>
+          <li><a href="login.html">My Account</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Occasions</h4>
+        <ul class="footer-links">
+          <li><a href="#catalog">Birthdays</a></li>
+          <li><a href="#catalog">Anniversaries</a></li>
+          <li><a href="#catalog">Farewells & Goodbyes</a></li>
+          <li><a href="#catalog">Festive Cheer</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Admin & Info</h4>
+        <ul class="footer-links">
+          <li><a href="admin.html">⚙️ Product Admin</a></li>
+          <li><a href="checkout.html">Checkout Demo</a></li>
+          <li><span style="color: var(--navy-subtle);">Local Storage Powered</span></li>
+          <li><span style="color: var(--coral);">Made with ❤️ for Gifting</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <span>&copy; 2026 Pick&Pack. All rights reserved.</span>
+      <span>Designed with Coral, Soft Cream & Deep Navy.</span>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="products.js"></script>
+  <script src="script.js"></script>
+  <script>
+    // ========================================================================
+    // INDEX PAGE SPECIFIC INTERACTIONS
+    // ========================================================================
+    document.addEventListener("DOMContentLoaded", () => {
+      let currentCategory = "all";
+      let searchQuery = "";
+      let currentSort = "featured";
+      let topRecommended = [];
+
+      // 1. Render Catalog Products
+      function renderCatalog() {
+        const grid = document.getElementById("products-grid");
+        if (!grid) return;
+
+        let list = [...getProducts()];
+
+        // Filter by category
+        if (currentCategory !== "all") {
+          list = list.filter(p => p.category.toLowerCase() === currentCategory.toLowerCase());
+        }
+
+        // Filter by search
+        if (searchQuery.trim()) {
+          const q = searchQuery.toLowerCase();
+          list = list.filter(p => 
+            p.name.toLowerCase().includes(q) ||
+            p.description.toLowerCase().includes(q) ||
+            p.category.toLowerCase().includes(q) ||
+            (p.personalities || []).some(t => t.toLowerCase().includes(q)) ||
+            (p.interests || []).some(i => i.toLowerCase().includes(q))
+          );
+        }
+
+        // Sort
+        if (currentSort === "price-low") {
+          list.sort((a, b) => a.price - b.price);
+        } else if (currentSort === "price-high") {
+          list.sort((a, b) => b.price - a.price);
+        } else if (currentSort === "rating") {
+          list.sort((a, b) => b.rating - a.rating);
+        } else {
+          // featured: bestsellers first
+          list.sort((a, b) => (b.bestseller ? 1 : 0) - (a.bestseller ? 1 : 0));
+        }
+
+        if (list.length === 0) {
+          grid.innerHTML = `
+            <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; color: var(--navy-muted);">
+              <div style="font-size: 3rem; margin-bottom: 10px;">🔍</div>
+              <h3>No matching gifts found</h3>
+              <p>Try clearing your filters or searching for something else.</p>
+            </div>
+          `;
+          return;
+        }
+
+        grid.innerHTML = list.map(product => `
+          <div class="product-card" id="prod-${product.id}">
+            <div class="product-image-wrap">
+              <span class="product-category-badge">${product.category}</span>
+              ${product.bestseller ? '<span class="bestseller-badge">Bestseller</span>' : ''}
+              <img src="${product.image}" alt="${product.name}" class="product-img" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&w=400&q=80'">
+            </div>
+            <div class="product-info">
+              <h3 class="product-title">${product.name}</h3>
+              <p class="product-desc">${product.description}</p>
+              <div class="product-tags">
+                ${(product.personalities || []).slice(0, 2).map(p => `<span class="tag-badge tag-badge-coral">${p}</span>`).join("")}
+                ${(product.interests || []).slice(0, 2).map(i => `<span class="tag-badge">${i}</span>`).join("")}
+              </div>
+              <div class="product-footer">
+                <div>
+                  <div class="product-price">₹${product.price}</div>
+                  <div class="product-rating">★ ${product.rating.toFixed(1)}</div>
+                </div>
+                <button class="btn btn-add-bundle" onclick="addItemToBundle(${product.id}, 1)">
+                  + Add to Bundle
+                </button>
+              </div>
+            </div>
+          </div>
+        `).join("");
+      }
+
+      // Initial catalog render
+      renderCatalog();
+
+      // Search and Sort event handlers
+      const searchInput = document.getElementById("catalog-search");
+      if (searchInput) {
+        searchInput.addEventListener("input", (e) => {
+          searchQuery = e.target.value;
+          renderCatalog();
+        });
+      }
+
+      const sortSelect = document.getElementById("catalog-sort");
+      if (sortSelect) {
+        sortSelect.addEventListener("change", (e) => {
+          currentSort = e.target.value;
+          renderCatalog();
+        });
+      }
+
+      // Category chip click
+      const chips = document.querySelectorAll(".filter-chip");
+      chips.forEach(chip => {
+        chip.addEventListener("click", () => {
+          chips.forEach(c => c.classList.remove("active"));
+          chip.classList.add("active");
+          currentCategory = chip.getAttribute("data-category");
+          renderCatalog();
+        });
+      });
+
+      // 2. Multi-Step Wizard Modal Handlers
+      const wizardOverlay = document.getElementById("wizard-modal-overlay");
+      const openWizardBtn = document.getElementById("open-wizard-btn");
+      const closeWizardBtn = document.getElementById("close-wizard-btn");
+
+      let wizardStep = 1;
+
+      function updateWizardUI() {
+        // Steps visibility
+        for (let i = 1; i <= 4; i++) {
+          const stepEl = document.getElementById(`wizard-step-${i}`);
+          const indEl = document.getElementById(`step-ind-${i}`);
+          if (stepEl) {
+            stepEl.classList.toggle("active", i === wizardStep);
+          }
+          if (indEl) {
+            indEl.classList.toggle("active", i === wizardStep);
+            indEl.classList.toggle("completed", i < wizardStep);
+          }
+        }
+
+        // Progress bar width
+        const fill = document.getElementById("wizard-progress-fill");
+        if (fill) fill.style.width = `${wizardStep * 25}%`;
+
+        // Buttons
+        const prevBtn = document.getElementById("wizard-prev-btn");
+        const nextBtn = document.getElementById("wizard-next-btn");
+        const submitBtn = document.getElementById("wizard-submit-btn");
+
+        if (prevBtn) prevBtn.style.visibility = wizardStep > 1 ? "visible" : "hidden";
+        if (nextBtn) nextBtn.style.display = wizardStep < 4 ? "inline-flex" : "none";
+        if (submitBtn) submitBtn.style.display = wizardStep === 4 ? "inline-flex" : "none";
+      }
+
+      if (openWizardBtn && wizardOverlay) {
+        openWizardBtn.addEventListener("click", () => {
+          wizardStep = 1;
+          updateWizardUI();
+          wizardOverlay.classList.add("active");
+        });
+      }
+
+      if (closeWizardBtn && wizardOverlay) {
+        closeWizardBtn.addEventListener("click", () => {
+          wizardOverlay.classList.remove("active");
+        });
+      }
+
+      const nextBtn = document.getElementById("wizard-next-btn");
+      if (nextBtn) {
+        nextBtn.addEventListener("click", () => {
+          if (wizardStep === 1) {
+            const name = document.getElementById("wiz-name").value.trim();
+            if (!name) {
+              showToast("Please enter the recipient's name", "warning");
+              return;
+            }
+          }
+          if (wizardStep < 4) {
+            wizardStep++;
+            updateWizardUI();
+          }
+        });
+      }
+
+      const prevBtn = document.getElementById("wizard-prev-btn");
+      if (prevBtn) {
+        prevBtn.addEventListener("click", () => {
+          if (wizardStep > 1) {
+            wizardStep--;
+            updateWizardUI();
+          }
+        });
+      }
+
+      // Step 2: Personality Chips (Max 3 selection)
+      const persChips = document.querySelectorAll("#personality-chips .select-chip");
+      const persCounter = document.getElementById("personality-counter");
+
+      function updatePersCounter() {
+        const count = document.querySelectorAll("#personality-chips .select-chip.selected").length;
+        if (persCounter) persCounter.textContent = `Pick up to 3 (${count}/3)`;
+      }
+
+      persChips.forEach(chip => {
+        chip.addEventListener("click", () => {
+          const selected = document.querySelectorAll("#personality-chips .select-chip.selected");
+          if (!chip.classList.contains("selected") && selected.length >= 3) {
+            showToast("You can choose up to 3 personality traits", "warning");
+            return;
+          }
+          chip.classList.toggle("selected");
+          updatePersCounter();
+        });
+      });
+
+      // Step 3: Interest Chips
+      const interestChips = document.querySelectorAll("#interest-chips .select-chip");
+      interestChips.forEach(chip => {
+        chip.addEventListener("click", () => {
+          chip.classList.toggle("selected");
+        });
+      });
+
+      // Step 4: Budget Slider live display
+      const budgetSlider = document.getElementById("wizard-budget-slider");
+      const budgetDisplay = document.getElementById("wizard-budget-display");
+      if (budgetSlider && budgetDisplay) {
+        budgetSlider.addEventListener("input", (e) => {
+          budgetDisplay.textContent = `₹${Number(e.target.value).toLocaleString('en-IN')}`;
+        });
+      }
+
+      // Wizard Submit & Recommendation Engine execution
+      const submitBtn = document.getElementById("wizard-submit-btn");
+      if (submitBtn) {
+        submitBtn.addEventListener("click", () => {
+          const name = document.getElementById("wiz-name").value.trim() || "Someone Special";
+          const relation = document.getElementById("wiz-relation").value;
+          const gender = document.getElementById("wiz-gender").value;
+          const ageGroup = document.getElementById("wiz-age").value;
+          const occasion = document.getElementById("wiz-occasion").value;
+          const budget = Number(document.getElementById("wizard-budget-slider").value) || 2000;
+
+          const personalities = Array.from(document.querySelectorAll("#personality-chips .select-chip.selected"))
+            .map(c => c.getAttribute("data-value"));
+          const interests = Array.from(document.querySelectorAll("#interest-chips .select-chip.selected"))
+            .map(c => c.getAttribute("data-value"));
+
+          const recipientProfile = {
+            name,
+            relation,
+            gender,
+            ageGroup,
+            personalities,
+            interests,
+            occasion,
+            budget
+          };
+
+          // Save recipient to bundle & saved recipients
+          const bundle = getBundle();
+          bundle.recipient = recipientProfile;
+          saveBundle(bundle);
+          saveRecipientProfile(recipientProfile);
+
+          // Close modal
+          wizardOverlay.classList.remove("active");
+
+          // Run recommendations
+          displayRecommendations(recipientProfile);
+        });
+      }
+
+      // 3. Display Recommendations Section
+      function displayRecommendations(recipient, reshuffle = false) {
+        const recSection = document.getElementById("recommendations-section");
+        const greetingTitle = document.getElementById("rec-greeting-title");
+        const greetingSubtitle = document.getElementById("rec-greeting-subtitle");
+        const chipsContainer = document.getElementById("rec-profile-chips");
+        const grid = document.getElementById("rec-cards-grid");
+
+        if (!recSection || !grid) return;
+
+        let scored = recommendProductsForRecipient(recipient);
+        if (reshuffle) {
+          // Shuffle top 8 slightly to show variations
+          const topPool = scored.slice(0, 10);
+          for (let i = topPool.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [topPool[i], topPool[j]] = [topPool[j], topPool[i]];
+          }
+          scored = [...topPool, ...scored.slice(10)];
+        }
+
+        // Pick top 4 products
+        topRecommended = scored.slice(0, 4);
+
+        greetingTitle.textContent = `Here's what we think ${recipient.name} will love ✨`;
+        greetingSubtitle.textContent = `Personalized for your ${recipient.relation} • Budget around ₹${recipient.budget.toLocaleString('en-IN')}`;
+
+        chipsContainer.innerHTML = `
+          <span class="tag-badge tag-badge-coral">🎂 ${recipient.occasion}</span>
+          ${recipient.personalities.map(p => `<span class="tag-badge tag-badge-mint">${p}</span>`).join("")}
+          ${recipient.interests.map(i => `<span class="tag-badge">${i}</span>`).join("")}
+        `;
+
+        grid.innerHTML = topRecommended.map(item => `
+          <div class="product-card rec-card">
+            <span class="rec-match-badge">${item.matchPercentage}% Match</span>
+            <div class="product-image-wrap">
+              <span class="product-category-badge">${item.product.category}</span>
+              <img src="${item.product.image}" alt="${item.product.name}" class="product-img" onerror="this.src='https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&w=400&q=80'">
+            </div>
+            <div class="product-info">
+              <h3 class="product-title">${item.product.name}</h3>
+              <div class="rec-reason">
+                <span>💡</span> <span>${item.explanation}</span>
+              </div>
+              <div class="product-footer">
+                <div>
+                  <div class="product-price">₹${item.product.price}</div>
+                  <div class="product-rating">★ ${item.product.rating.toFixed(1)}</div>
+                </div>
+                <button class="btn btn-add-bundle" onclick="addItemToBundle(${item.product.id}, 1)">
+                  + Add to Bundle
+                </button>
+              </div>
+            </div>
+          </div>
+        `).join("");
+
+        recSection.classList.add("active");
+        recSection.scrollIntoView({ behavior: "smooth", block: "start" });
+        showToast(`✨ Generated top gift picks for ${recipient.name}!`, "success");
+      }
+
+      // "Add all top picks" button
+      const addAllBtn = document.getElementById("rec-add-all-btn");
+      if (addAllBtn) {
+        addAllBtn.addEventListener("click", () => {
+          if (topRecommended.length > 0) {
+            addAllTopPicksToBundle(topRecommended);
+          }
+        });
+      }
+
+      // "Suggest again" button
+      const suggestAgainBtn = document.getElementById("rec-suggest-again-btn");
+      if (suggestAgainBtn) {
+        suggestAgainBtn.addEventListener("click", () => {
+          const bundle = getBundle();
+          displayRecommendations(bundle.recipient, true);
+        });
+      }
+
+      // If a recipient is already configured with preferences in the bundle, display recommendations on load
+      const existingBundle = getBundle();
+      if (existingBundle && existingBundle.recipient && existingBundle.recipient.name !== "Someone Special") {
+        displayRecommendations(existingBundle.recipient);
+      }
+    });
+  </script>
+</body>
+</html>

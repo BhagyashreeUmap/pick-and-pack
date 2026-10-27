@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard — Pick&Pack | Product & Order Management</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- ==========================================================================
+       NAVIGATION BAR
+       ========================================================================== -->
+  <nav class="navbar">
+    <div class="container navbar-inner">
+      <a href="index.html" class="brand-logo">
+        <span class="brand-icon">⚙️</span>
+        <div>
+          <span>Pick&Pack Admin</span>
+          <span class="brand-tagline">Inventory & Orders Dashboard</span>
+        </div>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="index.html" class="nav-link">🏬 View Storefront</a></li>
+        <li><a href="builder.html" class="nav-link">🎀 Bundle Builder</a></li>
+        <li id="nav-user-container">
+          <a href="login.html" class="nav-link">👤 Login</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ==========================================================================
+       ADMIN MAIN LAYOUT
+       ========================================================================== -->
+  <main class="admin-layout">
+    <div class="container">
+      
+      <!-- Top Stats Grid -->
+      <div class="admin-stats-grid">
+        <div class="stat-card">
+          <span style="font-size: 0.8rem; font-weight: 700; color: var(--navy-muted); text-transform: uppercase;">Total Products</span>
+          <div class="stat-val" id="stat-total-products">40</div>
+        </div>
+        <div class="stat-card">
+          <span style="font-size: 0.8rem; font-weight: 700; color: var(--navy-muted); text-transform: uppercase;">Active Categories</span>
+          <div class="stat-val" id="stat-categories">8</div>
+        </div>
+        <div class="stat-card">
+          <span style="font-size: 0.8rem; font-weight: 700; color: var(--navy-muted); text-transform: uppercase;">Orders Placed</span>
+          <div class="stat-val" id="stat-orders" style="color: var(--mint);">0</div>
+        </div>
+        <div class="stat-card">
+          <span style="font-size: 0.8rem; font-weight: 700; color: var(--navy-muted); text-transform: uppercase;">Active Bundle Items</span>
+          <div class="stat-val" id="stat-bundle-items" style="color: var(--coral);">0</div>
+        </div>
+      </div>
+
+      <!-- Section Tabs: Products vs Orders -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 16px;">
+        <div style="display: flex; gap: 10px;">
+          <button class="btn btn-navy" id="tab-btn-products">
+            📦 Product Catalog (<span id="count-tab-products">40</span>)
+          </button>
+          <button class="btn btn-secondary" id="tab-btn-orders">
+            📑 Customer Orders (<span id="count-tab-orders">0</span>)
+          </button>
+        </div>
+
+        <div style="display: flex; gap: 10px;" id="product-admin-actions">
+          <button class="btn btn-secondary btn-sm" id="btn-reset-default-products" style="color: #EF4444;">
+            🔄 Reset to Default 40 Products
+          </button>
+          <button class="btn btn-primary btn-sm" id="btn-open-add-product">
+            + Add New Product
+          </button>
+        </div>
+      </div>
+
+      <!-- PRODUCTS TABLE VIEW -->
+      <div id="view-products-section">
+        <!-- Table Search & Filter Bar -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
+          <div class="search-input-wrap" style="max-width: 340px;">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="admin-search-input" class="search-input" placeholder="Search by name, tag, category...">
+          </div>
+          <select id="admin-filter-category" class="sort-select">
+            <option value="all">All Categories (8)</option>
+            <option value="Flowers">Flowers</option>
+            <option value="Cute Stuff">Cute Stuff</option>
+            <option value="Stationery">Stationery</option>
+            <option value="Snacks">Snacks</option>
+            <option value="Tech">Tech</option>
+            <option value="Self-care">Self-care</option>
+            <option value="Books">Books</option>
+            <option value="Accessories">Accessories</option>
+          </select>
+        </div>
+
+        <div class="admin-table-container">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th style="width: 70px;">Image</th>
+                <th>Product Name</th>
+                <th>Category</th>
+                <th>Price (INR)</th>
+                <th>Recommendation Tags</th>
+                <th>Rating</th>
+                <th style="text-align: right; width: 140px;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="admin-products-tbody">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ORDERS LIST VIEW -->
+      <div id="view-orders-section" style="display: none;">
+        <div id="orders-list-container">
+          <!-- Rendered via JS -->
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ==========================================================================
+       ADD / EDIT PRODUCT MODAL
+       ========================================================================== -->
+  <div class="modal-overlay" id="product-modal">
+    <div class="wizard-modal" style="max-width: 680px;">
+      <div class="wizard-header">
+        <h3 id="product-modal-title">Add New Gift Product</h3>
+        <button class="wizard-close-btn" id="close-product-modal">&times;</button>
+      </div>
+      <div class="wizard-body">
+        <input type="hidden" id="form-product-id">
+
+        <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 16px;">
+          <div class="form-group">
+            <label class="form-label" for="prod-name">Product Name *</label>
+            <input type="text" id="prod-name" class="form-input" placeholder="e.g. Scented Botanical Soy Candle" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="prod-price">Price (₹ INR) *</label>
+            <input type="number" id="prod-price" class="form-input" placeholder="599" min="50" step="10" required>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+          <div class="form-group">
+            <label class="form-label" for="prod-category">Category *</label>
+            <select id="prod-category" class="form-select">
+              <option value="Flowers">Flowers</option>
+              <option value="Cute Stuff">Cute Stuff</option>
+              <option value="Stationery">Stationery</option>
+              <option value="Snacks">Snacks</option>
+              <option value="Tech">Tech</option>
+              <option value="Self-care">Self-care</option>
+              <option value="Books">Books</option>
+              <option value="Accessories">Accessories</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="prod-gender">Gender Leaning</label>
+            <select id="prod-gender" class="form-select">
+              <option value="neutral">Neutral (Unisex)</option>
+              <option value="feminine">Feminine leaning</option>
+              <option value="masculine">Masculine leaning</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="prod-image">Image URL</label>
+          <input type="url" id="prod-image" class="form-input" placeholder="https://images.unsplash.com/...">
+          <div style="margin-top: 8px; display: flex; align-items: center; gap: 12px;">
+            <img id="image-preview" src="https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&w=200&q=80" style="width: 50px; height: 50px; border-radius: var(--radius-sm); object-fit: cover; border: 1px solid var(--border);">
+            <span style="font-size: 0.78rem; color: var(--navy-muted);">Live image preview</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="prod-desc">Description</label>
+          <textarea id="prod-desc" class="form-textarea" rows="2" placeholder="Short, appealing product summary..."></textarea>
+        </div>
+
+        <!-- Tags Selection for Recommendation Engine -->
+        <div class="form-group">
+          <label class="form-label">Personality Tags (Comma-separated or presets)</label>
+          <input type="text" id="prod-personalities" class="form-input" placeholder="soft, happy, calm, creative, romantic, bold, studious, adventurous">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Interest Tags (Comma-separated)</label>
+          <input type="text" id="prod-interests" class="form-input" placeholder="flowers, cute stuff, books, gaming, tech, skincare, art, travel, cooking">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Occasion Tags (Comma-separated)</label>
+          <input type="text" id="prod-occasions" class="form-input" placeholder="birthday, anniversary, farewell, thank you, festival, just because">
+        </div>
+
+        <div style="display: flex; gap: 16px;">
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 0.88rem; cursor: pointer;">
+            <input type="checkbox" id="prod-bestseller" style="width: 18px; height: 18px; accent-color: var(--coral);">
+            <span>Mark as Bestseller ⭐</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="wizard-footer">
+        <button class="btn btn-secondary" id="btn-cancel-product-modal">Cancel</button>
+        <button class="btn btn-primary" id="btn-save-product">Save Product</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-bottom">
+      <span>&copy; 2026 Pick&Pack Admin.</span>
+      <a href="index.html" style="color: var(--coral);">Back to Storefront</a>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="products.js"></script>
+  <script src="script.js"></script>
+  <script>
+    // ========================================================================
+    // ADMIN DASHBOARD LOGIC
+    // ========================================================================
+    document.addEventListener("DOMContentLoaded", () => {
+      let filterCategory = "all";
+      let filterQuery = "";
+
+      // Tab Switching
+      const tabProducts = document.getElementById("tab-btn-products");
+      const tabOrders = document.getElementById("tab-btn-orders");
+      const viewProducts = document.getElementById("view-products-section");
+      const viewOrders = document.getElementById("view-orders-section");
+      const adminActions = document.getElementById("product-admin-actions");
+
+      tabProducts.addEventListener("click", () => {
+        tabProducts.className = "btn btn-navy";
+        tabOrders.className = "btn btn-secondary";
+        viewProducts.style.display = "block";
+        viewOrders.style.display = "none";
+        adminActions.style.display = "flex";
+      });
+
+      tabOrders.addEventListener("click", () => {
+        tabOrders.className = "btn btn-navy";
+        tabProducts.className = "btn btn-secondary";
+        viewProducts.style.display = "none";
+        viewOrders.style.display = "block";
+        adminActions.style.display = "none";
+        renderOrders();
+      });
+
+      function updateDashboardStats() {
+        const products = getProducts();
+        const orders = getOrders();
+        const bundle = getBundle();
+
+        document.getElementById("stat-total-products").textContent = products.length;
+        document.getElementById("count-tab-products").textContent = products.length;
+
+        const cats = new Set(products.map(p => p.category));
+        document.getElementById("stat-categories").textContent = cats.size;
+
+        document.getElementById("stat-orders").textContent = orders.length;
+        document.getElementById("count-tab-orders").textContent = orders.length;
+
+        const bundlePricing = calculateBundlePricing(bundle);
+        document.getElementById("stat-bundle-items").textContent = bundlePricing.totalItemsCount;
+      }
+
+      function renderProductsTable() {
+        const tbody = document.getElementById("admin-products-tbody");
+        if (!tbody) return;
+
+        let list = [...getProducts()];
+
+        if (filterCategory !== "all") {
+          list = list.filter(p => p.category === filterCategory);
+        }
+
+        if (filterQuery.trim()) {
+          const q = filterQuery.toLowerCase();
+          list = list.filter(p => 
+            p.name.toLowerCase().includes(q) ||
+            p.category.toLowerCase().includes(q) ||
+            (p.personalities || []).some(t => t.toLowerCase().includes(q)) ||
+            (p.interests || []).some(i => i.toLowerCase().includes(q))
+          );
+        }
+
+        if (list.length === 0) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="7" style="text-align: center; padding: 40px; color: var(--navy-muted);">
+                No products found matching filters.
+              </td>
+            </tr>
+          `;
+          return;
+        }
+
+        tbody.innerHTML = list.map(p => `
+          <tr>
+            <td>
+              <img src="${p.image}" alt="${p.name}" style="width: 48px; height: 48px; border-radius: var(--radius-sm); object-fit: cover;" onerror="this.src='https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&w=100&q=80'">
+            </td>
+            <td>
+              <strong style="color: var(--navy); display: block;">${p.name}</strong>
+              <span style="font-size: 0.75rem; color: var(--navy-muted);">${(p.description || '').substring(0, 50)}...</span>
+            </td>
+            <td>
+              <span class="tag-badge">${p.category}</span>
+              ${p.bestseller ? '<span class="tag-badge tag-badge-gold">Bestseller</span>' : ''}
+            </td>
+            <td>
+              <strong style="color: var(--coral-dark);">₹${p.price}</strong>
+            </td>
+            <td>
+              <div style="display: flex; flex-wrap: wrap; gap: 4px; max-width: 280px;">
+                ${(p.personalities || []).slice(0, 2).map(t => `<span class="tag-badge tag-badge-coral" style="font-size: 0.7rem;">${t}</span>`).join("")}
+                ${(p.interests || []).slice(0, 2).map(i => `<span class="tag-badge" style="font-size: 0.7rem;">${i}</span>`).join("")}
+              </div>
+            </td>
+            <td>★ ${p.rating ? p.rating.toFixed(1) : '4.8'}</td>
+            <td style="text-align: right;">
+              <button class="btn btn-secondary btn-sm" onclick="openEditProductModal(${p.id})" style="padding: 4px 10px; font-size: 0.8rem; margin-right: 4px;">
+                ✏️ Edit
+              </button>
+              <button class="btn btn-secondary btn-sm" onclick="deleteProduct(${p.id})" style="padding: 4px 10px; font-size: 0.8rem; color: #EF4444;">
+                ✕
+              </button>
+            </td>
+          </tr>
+        `).join("");
+
+        updateDashboardStats();
+      }
+
+      function renderOrders() {
+        const container = document.getElementById("orders-list-container");
+        const orders = getOrders();
+
+        if (orders.length === 0) {
+          container.innerHTML = `
+            <div style="background: white; border-radius: var(--radius-xl); padding: 60px 20px; text-align: center; border: 1px solid var(--border-light);">
+              <div style="font-size: 3rem; margin-bottom: 12px;">📑</div>
+              <h3>No Customer Orders Placed Yet</h3>
+              <p style="color: var(--navy-muted);">When users checkout with bundles or single gifts, they will appear here in real-time.</p>
+            </div>
+          `;
+          return;
+        }
+
+        container.innerHTML = orders.map(order => `
+          <div class="cart-bundle-card" style="margin-bottom: 18px;">
+            <div class="cart-bundle-head">
+              <div>
+                <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 4px;">
+                  <span class="tag-badge tag-badge-coral">Order ID: ${order.id}</span>
+                  <span class="tag-badge tag-badge-mint">Status: ${order.status}</span>
+                  <span style="font-size: 0.78rem; color: var(--navy-muted);">${new Date(order.createdAt).toLocaleString()}</span>
+                </div>
+                <h4 style="font-size: 1.15rem;">To: ${order.recipient.name} (from ${order.sender.name})</h4>
+                <p style="font-size: 0.82rem; color: var(--navy-muted);">
+                  Address: ${order.recipient.address}, ${order.recipient.city}, ${order.recipient.state} - ${order.recipient.pincode}
+                </p>
+              </div>
+              <div style="text-align: right;">
+                <div style="font-size: 1.3rem; font-weight: 800; color: var(--coral-dark);">
+                  ₹${order.pricing ? order.pricing.grandTotal.toLocaleString('en-IN') : 0}
+                </div>
+                <span class="tag-badge">${order.paymentMethod.toUpperCase()}</span>
+              </div>
+            </div>
+
+            <!-- Items -->
+            <div style="font-size: 0.85rem; color: var(--navy);">
+              <strong>Items in order:</strong>
+              <ul style="padding-left: 20px; margin-top: 6px;">
+                ${(order.items || []).map(item => {
+                  if (item.type === "bundle") {
+                    return `<li><strong>Bundle for ${item.recipient.name}:</strong> ${item.items.map(sub => sub.name + ' (×' + sub.quantity + ')').join(", ")}</li>`;
+                  } else {
+                    return `<li>${item.product.name} × ${item.quantity} (₹${item.product.price * item.quantity})</li>`;
+                  }
+                }).join("")}
+              </ul>
+            </div>
+          </div>
+        `).join("");
+      }
+
+      // Filter & Search events
+      document.getElementById("admin-search-input").addEventListener("input", (e) => {
+        filterQuery = e.target.value;
+        renderProductsTable();
+      });
+
+      document.getElementById("admin-filter-category").addEventListener("change", (e) => {
+        filterCategory = e.target.value;
+        renderProductsTable();
+      });
+
+      // Reset default products
+      document.getElementById("btn-reset-default-products").addEventListener("click", () => {
+        if (confirm("Reset the catalog back to the original 40 curated products? Any custom edits will be replaced.")) {
+          saveProducts(DEFAULT_PRODUCTS);
+          renderProductsTable();
+          showToast("Catalog reset to 40 default products!", "success");
+        }
+      });
+
+      // Product Modal Handlers
+      const modal = document.getElementById("product-modal");
+      const openAddBtn = document.getElementById("btn-open-add-product");
+      const closeBtn = document.getElementById("close-product-modal");
+      const cancelBtn = document.getElementById("btn-cancel-product-modal");
+      const saveBtn = document.getElementById("btn-save-product");
+      const imageInput = document.getElementById("prod-image");
+      const imagePreview = document.getElementById("image-preview");
+
+      imageInput.addEventListener("input", (e) => {
+        imagePreview.src = e.target.value || "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&w=200&q=80";
+      });
+
+      function openModal(isEdit = false, product = null) {
+        document.getElementById("product-modal-title").textContent = isEdit ? "Edit Product" : "Add New Gift Product";
+        document.getElementById("form-product-id").value = isEdit && product ? product.id : "";
+        document.getElementById("prod-name").value = isEdit && product ? product.name : "";
+        document.getElementById("prod-price").value = isEdit && product ? product.price : "";
+        document.getElementById("prod-category").value = isEdit && product ? product.category : "Flowers";
+        document.getElementById("prod-gender").value = isEdit && product ? (product.genderLeaning || "neutral") : "neutral";
+        document.getElementById("prod-image").value = isEdit && product ? product.image : "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&w=600&q=80";
+        imagePreview.src = document.getElementById("prod-image").value;
+        document.getElementById("prod-desc").value = isEdit && product ? (product.description || "") : "";
+        document.getElementById("prod-personalities").value = isEdit && product ? (product.personalities || []).join(", ") : "happy, soft";
+        document.getElementById("prod-interests").value = isEdit && product ? (product.interests || []).join(", ") : "flowers, cute stuff";
+        document.getElementById("prod-occasions").value = isEdit && product ? (product.occasions || []).join(", ") : "birthday, thank you";
+        document.getElementById("prod-bestseller").checked = isEdit && product ? !!product.bestseller : false;
+
+        modal.classList.add("active");
+      }
+
+      function closeModal() {
+        modal.classList.remove("active");
+      }
+
+      openAddBtn.addEventListener("click", () => openModal(false));
+      closeBtn.addEventListener("click", closeModal);
+      cancelBtn.addEventListener("click", closeModal);
+
+      saveBtn.addEventListener("click", () => {
+        const idField = document.getElementById("form-product-id").value;
+        const name = document.getElementById("prod-name").value.trim();
+        const price = Number(document.getElementById("prod-price").value);
+        const category = document.getElementById("prod-category").value;
+        const gender = document.getElementById("prod-gender").value;
+        const image = document.getElementById("prod-image").value.trim() || "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&w=600&q=80";
+        const desc = document.getElementById("prod-desc").value.trim();
+        const pers = document.getElementById("prod-personalities").value.split(",").map(s => s.trim().toLowerCase()).filter(Boolean);
+        const ints = document.getElementById("prod-interests").value.split(",").map(s => s.trim().toLowerCase()).filter(Boolean);
+        const occs = document.getElementById("prod-occasions").value.split(",").map(s => s.trim().toLowerCase()).filter(Boolean);
+        const bestseller = document.getElementById("prod-bestseller").checked;
+
+        if (!name || isNaN(price) || price <= 0) {
+          showToast("Please provide a valid product name and price", "warning");
+          return;
+        }
+
+        const products = getProducts();
+
+        if (idField) {
+          // Edit
+          const idx = products.findIndex(p => p.id === Number(idField));
+          if (idx >= 0) {
+            products[idx] = {
+              ...products[idx],
+              name,
+              price,
+              category,
+              genderLeaning: gender,
+              image,
+              description: desc,
+              personalities: pers,
+              interests: ints,
+              occasions: occs,
+              bestseller
+            };
+            showToast(`Product "${name}" updated!`, "success");
+          }
+        } else {
+          // Add
+          const newId = products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1;
+          products.unshift({
+            id: newId,
+            name,
+            price,
+            category,
+            genderLeaning: gender,
+            image,
+            description: desc,
+            personalities: pers,
+            interests: ints,
+            occasions: occs,
+            rating: 4.8,
+            bestseller
+          });
+          showToast(`New product "${name}" added to catalog!`, "success");
+        }
+
+        saveProducts(products);
+        closeModal();
+        renderProductsTable();
+      });
+
+      // Global window handlers for row actions
+      window.openEditProductModal = function(id) {
+        const products = getProducts();
+        const p = products.find(x => x.id === id);
+        if (p) openModal(true, p);
+      };
+
+      window.deleteProduct = function(id) {
+        const products = getProducts();
+        const p = products.find(x => x.id === id);
+        if (p && confirm(`Delete "${p.name}" from catalog?`)) {
+          const updated = products.filter(x => x.id !== id);
+          saveProducts(updated);
+          renderProductsTable();
+          showToast(`Deleted "${p.name}"`, "info");
+        }
+      };
+
+      // Initial table render
+      renderProductsTable();
+    });
+  </script>
+</body>
+</html>
